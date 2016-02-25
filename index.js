@@ -2,13 +2,14 @@
 
 'use strict';
 
-const canvasHeight = 400;
+// const canvasHeight = 400;
 
-const canvasWidth = 800;
+// const canvasWidth = 1200;
 
-var myCanvas;
+var myCanvas, canvasHeight, canvasWidth;
 
 class PageSetUp {
+
 	static setWidth() {
 		myCanvas.width = canvasWidth;
 	}
@@ -18,6 +19,8 @@ class PageSetUp {
 	}
 
 	static setCanvasSize() {
+		canvasHeight = document.body.clientHeight
+		canvasWidth = document.body.clientWidth
 		myCanvas = document.getElementById("myCanvas");  
 		PageSetUp.setWidth();
 		PageSetUp.setHeight();
@@ -27,11 +30,11 @@ class PageSetUp {
 
 var bodySetUp = function() {
 	PageSetUp.setCanvasSize();
-
-	var el = document.getElementById("myCanvas");
 	var canvas = new Canvas();
-	el.addEventListener("click", canvas.addBall.bind(canvas), false);
+	myCanvas.addEventListener("click", canvas.addBall.bind(canvas), false);
 };
+
+window.onresize = PageSetUp.setCanvasSize;
 
 
 let instance = null;
