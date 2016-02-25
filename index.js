@@ -39,6 +39,7 @@ class Canvas {
 	constructor() {
 		if(!instance){
 			instance = this;
+			this.animation_initialized = false;
 		}
 
 		this.balls = [];
@@ -59,30 +60,38 @@ class Canvas {
 
 		this.balls.push(ball);
 
-		if (this.raf === undefined) {
+		if (this.animation_initialized === false) {
 			this.draw();
+			this.animation_initialized = true;
 		}
-		// this.refreshIntervalId = setInterval(this.draw.bind(this), this.interval);
 	}
 
 	draw()
 	{
 		this.context.clearRect(0, 0, canvasWidth, canvasHeight);
-		// ball draw
 		
-		this.balls.map(function(ball) {
-			this.drawBall(ball);
+		this.balls = this.balls.map(function(ball, index) {
 			ball.updatePosition();
-
-			return ball;
+			this.drawBall(ball);
+				return ball;
 		}, this);
-		
+
+		this.balls = this.balls.filter(this.isInXAxis);
+
+		if (this.balls.length == 0) {
+			window.cancelAnimationFrame(this.raf);
+			return;
+		}
 
 		this.raf = window.requestAnimationFrame(this.draw.bind(this));
-		
-		// if (this.ball.x > canvasWidth + this.pointRadius) {
-		//  		window.clearInterval(this.refreshIntervalId)
-		//  	}
+	}
+
+	isInXAxis(ball)
+	{
+		if ( ball.x > canvasWidth + ball.pointRadius) {
+			return false;
+		}
+		return true;
 	}
 
 
@@ -102,8 +111,8 @@ class  BouncingBall {
 	constructor() {
 		
 		this.x, this.y;
-		this.dx = Math.random() * 2;
-		this.dy = Math.random() * -8;
+		this.dx = Math.random() * 2 + 0.5;
+		this.dy = Math.random() * -8 - 1;
 
 		this.pointRadius = 5;
 
