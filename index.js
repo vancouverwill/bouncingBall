@@ -1,21 +1,24 @@
+/* exported bodySetUp */
+
 'use strict';
 
-	const canvasHeight = 400;
+const canvasHeight = 400;
 
-  	const canvasWidth = 800;
+const canvasWidth = 800;
+
+var myCanvas;
 
 class PageSetUp {
 	static setWidth() {
-	  var canvas = document.getElementById("myCanvas");  
-	  canvas.width = canvasWidth;
+		myCanvas.width = canvasWidth;
 	}
 
 	static setHeight() {
-	  var canvas = document.getElementById("myCanvas");  
-	  canvas.height = canvasHeight;
+		myCanvas.height = canvasHeight;
 	}
 
 	static setCanvasSize() {
+		myCanvas = document.getElementById("myCanvas");  
 		PageSetUp.setWidth();
 		PageSetUp.setHeight();
 	}
@@ -26,44 +29,74 @@ var bodySetUp = function() {
 	PageSetUp.setCanvasSize();
 
 	var el = document.getElementById("myCanvas");
-	el.addEventListener("click", Canvas.clickEvent, false);
+	var canvas = new Canvas();
+	el.addEventListener("click", canvas.addBall.bind(canvas), false);
 };
 
 
+let instance = null;
 
 class Canvas {
 	constructor() {
-		this.ball;
+		if(!instance){
+              instance = this;
+        }
 
-		this.interval = 1;
+		// this.ball;
+
+		this.balls = []
+
+		// this.interval = 1;
 		this.context = myCanvas.getContext('2d');
 		this.refreshIntervalId;
+
+		this.raf
+
+		return instance;
 	}
 
-	static clickEvent(event) {
-		this.ball = new BouncingBall();
-		this.ball.init(event.clientX, event.clientY);
 
-		// this.draw()
-		this.canvas = new Canvas();
-	  	
-	  	this.refreshIntervalId = setInterval(this.canvas.draw.bind(this), this.interval);
+
+	addBall(event) {
+		var ball = new BouncingBall();
+		ball.create(event.clientX, event.clientY);
+
+		this.balls.push(ball);
+
+		if (this.raf === undefined) {
+			this.draw();
+		}
+		// this.refreshIntervalId = setInterval(this.draw.bind(this), this.interval);
 	}
 
 	draw()
 	{
 		this.context.clearRect(0, 0, canvasWidth, canvasHeight);
+		// ball draw
+		
+		this.balls.map(function(ball) {
+			this.drawBall(ball);
+			ball.updatePosition();
+
+			return ball;
+		}, this);
+		
+
+		this.raf = window.requestAnimationFrame(this.draw.bind(this));
+		
+		// if (this.ball.x > canvasWidth + this.pointRadius) {
+		//  		window.clearInterval(this.refreshIntervalId)
+		//  	}
+	}
+
+
+	drawBall(ball)
+	{
 		this.context.beginPath();
-		this.context.fillStyle= this.ball.colour;
-		this.context.arc(this.ball.x, this.ball.y, this.ball.pointRadius, 0, Math.PI*2, true);
+		this.context.fillStyle= ball.colour;
+		this.context.arc(ball.x, ball.y, ball.pointRadius, 0, Math.PI*2, true);
 		this.context.closePath();
 		this.context.fill();
-
-		this.ball.updatePosition();
-		
-		if (this.ball.x > canvasWidth + this.pointRadius) {
-	  		window.clearInterval(this.refreshIntervalId)
-	  	}
 	}
 
 }
@@ -73,13 +106,13 @@ class  BouncingBall {
 	constructor() {
 		
 		this.x, this.y;
-		this.dx = 0.5;
-		this.dy = -2;
+		this.dx = Math.random() * 2;
+		this.dy = Math.random() * -8;
 
 		this.pointRadius = 5;
 
-		this.gravityRate = 0.01;
-		this.dampingRate = 0.9;
+		this.gravityRate = 0.1;
+		this.dampingRate = 0.8;
 
 		this.colour;
 
@@ -87,7 +120,7 @@ class  BouncingBall {
 
 	
 
-	init(startingX, startingY)
+	create(startingX, startingY)
 	{
 		this.x = startingX;
 		this.y = startingY;
@@ -98,7 +131,10 @@ class  BouncingBall {
 	}
 
 	updatePosition() {
-		if(this.y > canvasHeight) this.dy = -this.dy * this.dampingRate; 
+		if(this.y > canvasHeight) {
+			this.y = canvasHeight
+			this.dy = -this.dy * this.dampingRate; 
+		}
 		this.x += this.dx; 
 		this.y += this.dy;
 
@@ -106,12 +142,12 @@ class  BouncingBall {
 	}
 
 	getRandomColor() {
-	    var letters = '0123456789ABCDEF'.split('');
-	    var color = '#';
-	    for (var i = 0; i < 6; i++ ) {
-	        color += letters[Math.floor(Math.random() * 16)];
-	    }
-	    return color;
+		var letters = '0123456789ABCDEF'.split('');
+		var color = '#';
+		for (var i = 0; i < 6; i++ ) {
+			color += letters[Math.floor(Math.random() * 16)];
+		}
+		return color;
 	}
 
 	
