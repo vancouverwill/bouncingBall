@@ -1,10 +1,6 @@
 /* exported bodySetUp */
+"use strict";
 
-'use strict';
-
-// const canvasHeight = 400;
-
-// const canvasWidth = 1200;
 
 var myCanvas, canvasHeight, canvasWidth;
 
@@ -19,8 +15,8 @@ class PageSetUp {
 	}
 
 	static setCanvasSize() {
-		canvasHeight = document.body.clientHeight
-		canvasWidth = document.body.clientWidth
+		canvasHeight = document.body.clientHeight;
+		canvasWidth = document.body.clientWidth;
 		myCanvas = document.getElementById("myCanvas");  
 		PageSetUp.setWidth();
 		PageSetUp.setHeight();
@@ -42,18 +38,15 @@ let instance = null;
 class Canvas {
 	constructor() {
 		if(!instance){
-              instance = this;
-        }
+			instance = this;
+		}
 
-		// this.ball;
+		this.balls = [];
 
-		this.balls = []
-
-		// this.interval = 1;
-		this.context = myCanvas.getContext('2d');
+		this.context = myCanvas.getContext("2d");
 		this.refreshIntervalId;
 
-		this.raf
+		this.raf;
 
 		return instance;
 	}
@@ -135,7 +128,7 @@ class  BouncingBall {
 
 	updatePosition() {
 		if(this.y > canvasHeight) {
-			this.y = canvasHeight
+			this.y = canvasHeight;
 			this.dy = -this.dy * this.dampingRate; 
 		}
 		this.x += this.dx; 
@@ -145,8 +138,8 @@ class  BouncingBall {
 	}
 
 	getRandomColor() {
-		var letters = '0123456789ABCDEF'.split('');
-		var color = '#';
+		var letters = "0123456789ABCDEF".split("");
+		var color = "#";
 		for (var i = 0; i < 6; i++ ) {
 			color += letters[Math.floor(Math.random() * 16)];
 		}
