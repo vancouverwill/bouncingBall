@@ -1,17 +1,8 @@
 
+To begin wiht run `npm install`
 
-to check js
+* To check js `npm run lint`
 
-`npm run lint`
+* Run tests `npm test`
 
-Run tests
-
-`npm test`
-
-To do client tests run 
-
-`npm run client_test_setup`
-
-then view tests at 
-
-`test/client_side/index.html`
+* To do client tests run  `npm run client_test_setup` then view tests at  `test/client_side/index.html`
