@@ -8,11 +8,12 @@ var Canvas = require('../../src/Canvas');
 describe('Canvas', function() {
   var canvas;
 
-  before(function() {
+  before(function() { 
   	// var html = '<div></div><div></div><div class="addHere"></div>';
   	// $('body').append(html);
-    //
-    var htmlCanvas = document.getElementById("myCanvas"); 
+    
+    
+    // var htmlCanvas = document.getElementById("myCanvas"); 
     canvas = new Canvas(htmlCanvas);
   });
 

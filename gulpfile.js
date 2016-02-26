@@ -61,7 +61,7 @@ gulp.task('build', function() {
 
 
 var testOpts = {
-  entries: ['test/client_side/Canvas,js'],
+  entries: ['test/client_side/Canvas.js'],
   debug: false
 };
 gulp.task('clientSideTestjs', bundle); 

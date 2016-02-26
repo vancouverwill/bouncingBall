@@ -40,7 +40,9 @@ var BouncingBall = function () {
 			this.x += this.dx;
 			this.y += this.dy;
 
-			this.applyGravity();
+			if (canvasHeight - this.y > this.pointRadius / 2) {
+				this.applyGravity();
+			}
 		}
 	}, {
 		key: "hasHitFloor",
@@ -51,7 +53,12 @@ var BouncingBall = function () {
 		key: "bounce",
 		value: function bounce(canvasHeight) {
 			this.y = canvasHeight; // prevent getting stuck off screen
-			this.dy = -this.dy * this.dampingRate;
+			if (Math.abs(this.dy) > 0.1) {
+				this.dy = -this.dy * this.dampingRate;
+			} else {
+				this.y = canvasHeight - this.pointRadius / 2;
+				this.dy = 0;
+			}
 		}
 	}, {
 		key: "applyGravity",
