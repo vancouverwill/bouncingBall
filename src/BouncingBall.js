@@ -53,9 +53,13 @@ class  BouncingBall {
 		this.x += this.dx; 
 		this.y += this.dy;
 
-		if (canvasHeight - this.y > this.pointRadius / 2) {
+		if (this.isBallOffGround(canvasHeight)) {
 			this.applyGravity();
 		}
+	}
+
+	isBallOffGround(canvasHeight) {
+		return canvasHeight - this.y > this.pointRadius / 2;
 	}
 
 	hasHitFloor(canvasHeight) {
@@ -64,13 +68,18 @@ class  BouncingBall {
 
 	bounce(canvasHeight) {
 		this.y = canvasHeight; // prevent getting stuck off screen
-		if (Math.abs(this.dy) > 0.1) {
+		var minSpeedNeededToLeaveFloor = 0.1;
+		if (Math.abs(this.dy) > minSpeedNeededToLeaveFloor) {
 			this.dy = -this.dy * this.dampingRate;
 		}
 		else {
-			this.y = canvasHeight - this.pointRadius / 2;
-			this.dy = 0;
+			this.setBallRolling(canvasHeight)
 		}
+	}
+
+	setBallRolling(canvasHeight) {
+		this.y = canvasHeight - this.pointRadius / 2;
+		this.dy = 0;
 	}
 
 	applyGravity() {

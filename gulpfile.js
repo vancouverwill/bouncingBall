@@ -34,6 +34,7 @@ b.on('log', gutil.log); // output build logs to terminal
 function bundle() {
   return b.bundle()
     // log errors if they happen
+    .on('error', function(err) { console.error(err); this.emit('end'); })
     .pipe(source('bundle.js'))
     // optional, remove if you don't need to buffer file contents
     .pipe(buffer())
@@ -51,6 +52,7 @@ function bundle() {
 
 
 
+
 gulp.task('build', function() {
   return gulp.src('dist/bundle.js')
     .pipe(uglify().on('error', gutil.log))
@@ -60,21 +62,4 @@ gulp.task('build', function() {
 
 
 
-var testOpts = {
-  entries: ['test/client_side/Canvas.js'],
-  debug: false
-};
-gulp.task('clientSideTestjs', bundle); 
-var topts = assign({}, watchify.args, testOpts);
-var tb = watchify(browserify(topts)); 
-tb.on('update', bundle).on('error', gutil.log); 
-
-function testBundle() {
-  return tb.bundle()
-    .pipe(source('Canvas.js').on('error', gutil.log))
-    .pipe(buffer().on('error', gutil.log))
-    .pipe(gulp.dest('./test/build').on('error', gutil.log))
-}
-
-
-gulp.task('default', ['js', 'clientSideTestjs']);  
+gulp.task('default', ['js']);  
