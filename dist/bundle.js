@@ -120,7 +120,7 @@ var Canvas = function () {
 		this.PageObject = PageObject;
 
 		this.balls = [];
-		this.context = myCanvas.getContext("2d");
+		this.context = this.PageObject.canvas.getContext("2d");
 		this.raf;
 
 		return instance;
@@ -204,16 +204,17 @@ var PageSetUp = function () {
 	_createClass(PageSetUp, null, [{
 		key: "updateCanvasHeight",
 		value: function updateCanvasHeight() {
-			myCanvas.width = this.canvasWidth;
+			this.canvas.width = this.canvasWidth;
 		}
 	}, {
 		key: "updateCanvasWidth",
 		value: function updateCanvasWidth() {
-			myCanvas.height = this.canvasHeight;
+			this.canvas.height = this.canvasHeight;
 		}
 	}, {
 		key: "setCanvasSize",
-		value: function setCanvasSize() {
+		value: function setCanvasSize(canvas) {
+			this.canvas = canvas;
 			this.canvasHeight = document.body.clientHeight;
 			this.canvasWidth = document.body.clientWidth;
 			PageSetUp.updateCanvasHeight();
@@ -222,18 +223,18 @@ var PageSetUp = function () {
 	}, {
 		key: "getCanvasHeight",
 		value: function getCanvasHeight() {
-			return myCanvas.width;
+			return this.canvas.width;
 		}
 	}, {
 		key: "getCanvasWidth",
 		value: function getCanvasWidth() {
-			return myCanvas.height;
+			return this.canvas.height;
 		}
 	}, {
 		key: "addEvents",
 		value: function addEvents() {
 			var canvas = new Canvas(this);
-			myCanvas.addEventListener("click", canvas.addBall.bind(canvas), false);
+			this.canvas.addEventListener("click", canvas.addBall.bind(canvas), false);
 		}
 	}]);
 
@@ -248,10 +249,11 @@ module.exports = PageSetUp;
 
 var PageSetUp = require("./PageSetUp");
 
-exports.myCanvas = document.getElementById("myCanvas");
+// exports.myCanvas = document.getElementById("myCanvas");
 
 var bodySetUp = function bodySetUp() {
-	PageSetUp.setCanvasSize();
+	var canvas = document.getElementById("myCanvas");
+	PageSetUp.setCanvasSize(canvas);
 	PageSetUp.addEvents();
 };
 

@@ -4,10 +4,11 @@
 
 var PageSetUp = require("./PageSetUp");
 
-exports.myCanvas = document.getElementById("myCanvas"); 
+// exports.myCanvas = document.getElementById("myCanvas"); 
 
 var bodySetUp = function() {
-	PageSetUp.setCanvasSize();
+	var canvas = document.getElementById("myCanvas"); 
+	PageSetUp.setCanvasSize(canvas);
 	PageSetUp.addEvents();
 };
 
@@ -18,5 +19,3 @@ window.onload = function () {
 window.onresize = function() {
 	PageSetUp.setCanvasSize();
 };
-
-

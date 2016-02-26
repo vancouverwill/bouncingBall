@@ -7,14 +7,15 @@ class PageSetUp {
 
 	}
 	static updateCanvasHeight() {
-		myCanvas.width = this.canvasWidth;
+		this.canvas.width = this.canvasWidth;
 	}
 
 	static updateCanvasWidth() {
-		myCanvas.height = this.canvasHeight;
+		this.canvas.height = this.canvasHeight;
 	}
 
-	static setCanvasSize() {
+	static setCanvasSize(canvas) {
+		this.canvas = canvas;
 		this.canvasHeight = document.body.clientHeight;
 		this.canvasWidth = document.body.clientWidth;
 		PageSetUp.updateCanvasHeight();
@@ -22,16 +23,16 @@ class PageSetUp {
 	}
 
 	static getCanvasHeight() {
-		return myCanvas.width;
+		return this.canvas.width;
 	}
 
 	static getCanvasWidth() {
-		return myCanvas.height;
+		return this.canvas.height;
 	}
 
 	static addEvents() {
 		var canvas = new Canvas(this);
-		myCanvas.addEventListener("click", canvas.addBall.bind(canvas), false);
+		this.canvas.addEventListener("click", canvas.addBall.bind(canvas), false);
 	}
 }
 

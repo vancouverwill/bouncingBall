@@ -5,7 +5,7 @@
   "main": "index.html",
   "scripts": {
     "lint": "eslint src/*",
-    "test": "mocha --compilers js:babel-core/register"
+    "test": "mocha --compilers js:babel-core/register test/serverSide"
   },
   "author": "Will Melbourne",
   "license": "ISC",

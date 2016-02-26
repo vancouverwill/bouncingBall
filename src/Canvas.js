@@ -14,7 +14,7 @@ class Canvas {
 		this.PageObject = PageObject;
 
 		this.balls = [];
-		this.context = myCanvas.getContext("2d");
+		this.context = this.PageObject.canvas.getContext("2d");
 		this.raf;
 
 		return instance;

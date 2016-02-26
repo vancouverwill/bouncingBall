@@ -18,21 +18,21 @@ var customOpts = {
   debug: true
 };
 var opts = assign({}, watchify.args, customOpts);
-var bundler = watchify(browserify(opts)); 
+var b = watchify(browserify(opts)); 
 
 // add transformations here, this is essential for minifying right now because 
 // the minifaction tool doesn't yet support es6 features
 // Babel transform
-bundler.transform(babelify.configure({
+b.transform(babelify.configure({
     sourceMapRelative: 'src',
 }));
 
 gulp.task('js', bundle); // so you can run `gulp js` to build the file
-bundler.on('update', bundle); // on any dep update, runs the bundler
-bundler.on('log', gutil.log); // output build logs to terminal
+b.on('update', bundle); // on any dep update, runs the b
+b.on('log', gutil.log); // output build logs to terminal
 
 function bundle() {
-  return bundler.bundle()
+  return b.bundle()
     // log errors if they happen
     .pipe(source('bundle.js'))
     // optional, remove if you don't need to buffer file contents
@@ -58,4 +58,23 @@ gulp.task('build', function() {
 });
 
 
-gulp.task('default', ['js']);  
+
+
+var testOpts = {
+  entries: ['test/client_side/Canvas,js'],
+  debug: false
+};
+gulp.task('clientSideTestjs', bundle); 
+var topts = assign({}, watchify.args, testOpts);
+var tb = watchify(browserify(topts)); 
+tb.on('update', bundle).on('error', gutil.log); 
+
+function testBundle() {
+  return tb.bundle()
+    .pipe(source('Canvas.js').on('error', gutil.log))
+    .pipe(buffer().on('error', gutil.log))
+    .pipe(gulp.dest('./test/build').on('error', gutil.log))
+}
+
+
+gulp.task('default', ['js', 'clientSideTestjs']);  

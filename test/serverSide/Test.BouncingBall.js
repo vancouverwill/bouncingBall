@@ -2,7 +2,7 @@ require('jsdom-global')()
 
 var assert = require('assert');
 
-var BouncingBall = require('../src/BouncingBall');
+var BouncingBall = require('../../src/BouncingBall');
 
 
 describe('Bouncing Ball', function() {
@@ -13,7 +13,7 @@ describe('Bouncing Ball', function() {
   });
 
   beforeEach(function() {
-  ball = new BouncingBall(20, 40);
+    ball = new BouncingBall(20, 40);
   });
 
   it('should have x and y equal to paramaters passed to the constructor', function () {
@@ -30,14 +30,12 @@ describe('Bouncing Ball', function() {
     var currentVerticalAcceleration = ball.dy;
     ball.applyGravity()
     var adjustedVerticalAcceleration = ball.dy;
-
     assert.equal(currentVerticalAcceleration + ball.gravityRate, adjustedVerticalAcceleration);
   });
 
   it('each new ball should have different starting horizontal and vertical speeds.', function() {
     var ball1 = new BouncingBall(0, 0);
     var ball2 = new BouncingBall(0, 0);
-
     assert.notEqual(ball1.dx, ball2.dx);
     assert.notEqual(ball1.dy, ball2.dy);
   });
@@ -55,7 +53,6 @@ describe('Bouncing Ball', function() {
   it('should change direction when bouncing', function() {
     ball.dy = 10;
     ball.bounce(tempCanvasHeight);
-    // var expectedVerticalSpeed = ball.dy * -1 * ball.dampingRate;
     assert.equal(ball.dy < 0, true);
   })
 
