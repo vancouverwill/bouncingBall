@@ -1,19 +1,21 @@
 /* exported bodySetUp */
 "use strict";
 
+// require('babel-core/register');
+
 
 var myCanvas, canvasHeight, canvasWidth;
 
 class PageSetUp {
-	static setWidth = () => {
+	static setWidth() {
 		myCanvas.width = canvasWidth;
 	}
 
-	static setHeight = () => {
+	static setHeight() {
 		myCanvas.height = canvasHeight;
 	}
 
-	static setCanvasSize = () => {
+	static setCanvasSize() {
 		canvasHeight = document.body.clientHeight;
 		canvasWidth = document.body.clientWidth;
 		myCanvas = document.getElementById("myCanvas");  
@@ -42,26 +44,27 @@ class Canvas {
 
 		this.balls = [];
 		this.context = myCanvas.getContext("2d");
-		this.refreshIntervalId;
+		// this.refreshIntervalId;
 		this.raf;
 
 		return instance;
 	}
 
-	addBall = (event) => {
-		var ball = new BouncingBall();
-		ball.create(event.clientX, event.clientY);
-
+	addBall(event) {
+		var ball = new BouncingBall(event.clientX, event.clientY);
 		this.balls.push(ball);
 
+		this.setAnimating();
+	}
+
+	setAnimating() {
 		if (this.animation_active === false) {
-			this.draw();
+			this.animate();
 			this.animation_active = true;
 		}
 	}
 
-	draw = () =>
-	{
+	animate(){
 		this.context.clearRect(0, 0, canvasWidth, canvasHeight);
 		
 		this.balls = this.balls.map(function(ball, index) {
@@ -78,19 +81,18 @@ class Canvas {
 			return;
 		}
 
-		this.raf = window.requestAnimationFrame(this.draw.bind(this));
+		this.raf = window.requestAnimationFrame(this.animate);
+		// this.raf = window.requestAnimationFrame(this.draw.bind(this));
 	}
 
-	isInXAxis = (ball) =>
-	{
+	isInXAxis(ball) {
 		if ( ball.x > canvasWidth + ball.pointRadius) {
 			return false;
 		}
 		return true;
 	}
 
-	drawBall = (ball) =>
-	{
+	drawBall(ball) {
 		this.context.beginPath();
 		this.context.fillStyle= ball.colour;
 		this.context.arc(ball.x, ball.y, ball.pointRadius, 0, Math.PI*2, true);
@@ -101,9 +103,12 @@ class Canvas {
 
 
 class  BouncingBall {
-	constructor() {
+	constructor(startingX, startingY) {
 		
-		this.x, this.y;
+		this.x = startingX;
+		this.y = startingY;
+
+		this.colour = this.getRandomColor();
 		this.dx = Math.random() * 2 + 0.5;
 		this.dy = Math.random() * -8 - 1;
 
@@ -113,21 +118,32 @@ class  BouncingBall {
 		this.dampingRate = 0.8;
 
 		this.colour;
-
 	}
 
-	create = (startingX, startingY) =>
-	{
-		this.x = startingX;
-		this.y = startingY;
-
-		this.colour = this.getRandomColor();
-
-		
+	set y(value) {
+		if (typeof value !== 'number') {
+			throw new Error('"y" must be a number.');
+		}
+		this._y = value;
 	}
 
-	updatePosition = () => {
-		if(this.y > canvasHeight) {
+	get y() {
+		return this._y;
+	}  
+
+	set x(value) {
+		if (typeof value !== 'number') {
+			throw new Error('"x" must be a number.');
+		}
+		this._x = value;
+	}
+
+	get x() {
+		return this._x;
+	}
+
+	updatePosition() {
+		if (this.y > canvasHeight) {
 			this.y = canvasHeight;
 			this.dy = -this.dy * this.dampingRate; 
 		}
@@ -137,7 +153,7 @@ class  BouncingBall {
 		this.dy = this.dy + this.gravityRate;
 	}
 
-	getRandomColor = () => {
+	getRandomColor() {
 		var letters = "0123456789ABCDEF".split("");
 		var color = "#";
 		for (var i = 0; i < 6; i++ ) {
@@ -146,3 +162,5 @@ class  BouncingBall {
 		return color;
 	}	
 }
+
+var exports = module.exports = BouncingBall;

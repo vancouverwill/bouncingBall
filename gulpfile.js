@@ -1,17 +1,16 @@
 var gulp       = require('gulp');  
 var babel = require('gulp-babel'); 
 var sourcemaps = require('gulp-sourcemaps');
-// var minify = require('gulp-minify');
 var uglify = require('gulp-uglify');
-var watch      = require('gulp-watch');
-// var assign = require('lodash.assign');
-// var babelify = require('babelify');
-// var browserify = require('browserify');
-// var watchify = require('watchify');
+// var watch      = require('gulp-watch');
+var assign = require('lodash.assign');
+var babelify = require('babelify');
+var browserify = require('browserify');
+var watchify = require('watchify');
 
-// var gutil = require('gulp-util');
-// var source = require('vinyl-source-stream');
-// var buffer = require('vinyl-buffer');
+var gutil = require('gulp-util');
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
 
 
 gulp.task('babel', function() {
@@ -22,19 +21,19 @@ gulp.task('babel', function() {
 		}))
     .pipe(uglify())
 		.pipe(sourcemaps.write("."))
-		.pipe(gulp.dest('build  '));
+		.pipe(gulp.dest('build'));
 });
 
-gulp.task('watch-js', function() {  
-  gulp.watch('./src/*.js' , ['babel']);
-});
+// gulp.task('watch-js', function() {  
+//   gulp.watch('./src/*.js' , ['babel']);
+// });
 
 
-/*
+
 
 // add custom browserify options here
 var customOpts = {
-  entries: ['build/tasks.js'],
+  entries: ['build/index.js'],
   debug: true
 };
 var opts = assign({}, watchify.args, customOpts);
@@ -58,7 +57,7 @@ function bundle() {
     	gutil.log.bind(gutil, 'Browserify Error')
     	this.emit("end");
     })
-    .pipe(source('./public/dist/bundle.js'))
+    .pipe(source('./dist/bundle.js'))
     // optional, remove if you don't need to buffer file contents
     .pipe(buffer())
     // optional, remove if you dont want sourcemaps
@@ -67,6 +66,7 @@ function bundle() {
     .pipe(sourcemaps.write('./')) // writes .map file
     .pipe(gulp.dest('./'));
 }
-*/
 
-gulp.task('default', ['babel', 'watch-js']);  
+
+// gulp.task('default', ['babel', 'watch-js', 'watchify']);  
+gulp.task('default', ['babel', 'watchify']);  
