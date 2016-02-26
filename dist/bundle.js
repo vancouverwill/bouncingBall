@@ -13,27 +13,49 @@ var BouncingBall = function () {
 		this.y = startingY;
 
 		this.colour = this.getRandomColor();
-		this.dx = Math.random() * 2 + 0.5;
-		this.dy = Math.random() * -8 - 1;
+		this.intializeRandomSpeed();
 
 		this.pointRadius = 5;
 
 		this.gravityRate = 0.1;
 		this.dampingRate = 0.8;
-
-		this.colour;
 	}
 
 	_createClass(BouncingBall, [{
+		key: "intializeRandomSpeed",
+		value: function intializeRandomSpeed() {
+			var minDx = 0.5;
+			var dxRange = 2;
+			this.dx = Math.random() * dxRange + minDx;
+
+			var minDy = -1;
+			var dyRange = -8;
+			this.dy = Math.random() * dyRange + minDy;
+		}
+	}, {
 		key: "updatePosition",
 		value: function updatePosition(canvasHeight) {
-			if (this.y > canvasHeight) {
-				this.y = canvasHeight;
-				this.dy = -this.dy * this.dampingRate;
-			}
+			if (this.hasHitFloor(canvasHeight)) this.bounce(canvasHeight);
+
 			this.x += this.dx;
 			this.y += this.dy;
 
+			this.applyGravity();
+		}
+	}, {
+		key: "hasHitFloor",
+		value: function hasHitFloor(canvasHeight) {
+			return this.y > canvasHeight;
+		}
+	}, {
+		key: "bounce",
+		value: function bounce(canvasHeight) {
+			this.y = canvasHeight;
+			this.dy = -this.dy * this.dampingRate;
+		}
+	}, {
+		key: "applyGravity",
+		value: function applyGravity() {
 			this.dy = this.dy + this.gravityRate;
 		}
 	}, {
@@ -241,6 +263,7 @@ window.onresize = function () {
 	PageSetUp.setCanvasSize();
 };
 
-},{"./PageSetUp":3}]},{},[4]);
+},{"./PageSetUp":3}]},{},[4])
+
 
 //# sourceMappingURL=bundle.js.map

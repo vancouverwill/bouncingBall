@@ -2,8 +2,8 @@
 
 to check js
 
-`eslint index.js`
+`npm run lint`
 
 Run tests
 
-`mocha --compilers js:babel-core/register`
+`npm test`

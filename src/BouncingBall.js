@@ -7,15 +7,22 @@ class  BouncingBall {
 		this.y = startingY;
 
 		this.colour = this.getRandomColor();
-		this.dx = Math.random() * 2 + 0.5;
-		this.dy = Math.random() * -8 - 1;
+		this.intializeRandomSpeed();
 
 		this.pointRadius = 5;
 
 		this.gravityRate = 0.1;
 		this.dampingRate = 0.8;
+	}
 
-		this.colour;
+	intializeRandomSpeed() {
+		const minDx = 0.5;
+		const dxRange = 2;
+		this.dx = Math.random() * dxRange + minDx;
+
+		const minDy = -1;
+		const dyRange = -8;
+		this.dy = Math.random() * dyRange + minDy;
 	}
 
 	set y(value) {
@@ -41,13 +48,24 @@ class  BouncingBall {
 	}
 
 	updatePosition(canvasHeight) {
-		if (this.y > canvasHeight) {
-			this.y = canvasHeight;
-			this.dy = -this.dy * this.dampingRate; 
-		}
+		if (this.hasHitFloor(canvasHeight)) this.bounce(canvasHeight);
+
 		this.x += this.dx; 
 		this.y += this.dy;
 
+		this.applyGravity();
+	}
+
+	hasHitFloor(canvasHeight) {
+		return this.y > canvasHeight;
+	}
+
+	bounce(canvasHeight) {
+		this.y = canvasHeight;
+		this.dy = -this.dy * this.dampingRate;
+	}
+
+	applyGravity() {
 		this.dy = this.dy + this.gravityRate;
 	}
 
@@ -60,5 +78,6 @@ class  BouncingBall {
 		return color;
 	}	
 }
+
 
 module.exports = BouncingBall;

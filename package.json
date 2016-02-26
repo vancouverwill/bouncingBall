@@ -4,6 +4,7 @@
   "description": "bouncing ball js demonstratino",
   "main": "index.html",
   "scripts": {
+    "lint": "eslint src/*",
     "test": "mocha --compilers js:babel-core/register"
   },
   "author": "Will Melbourne",
@@ -29,7 +30,6 @@
     "lodash.assign": "^4.0.4",
     "mocha": "*",
     "mocha-jsdom": "^1.1.0",
-    "streamify": "^0.2.5",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "vinyl-transform": "^1.0.0",
