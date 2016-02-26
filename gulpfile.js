@@ -1,5 +1,5 @@
 var gulp       = require('gulp');  
-var babel = require('gulp-babel'); 
+// var babel = require('gulp-babel'); 
 var sourcemaps = require('gulp-sourcemaps');
 var uglify = require('gulp-uglify');
 // var watch      = require('gulp-watch');
@@ -12,10 +12,9 @@ var watchify = require('watchify');
 var gutil = require('gulp-util');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
+var streamify = require('streamify');
+// var transform = require('vinyl-transform');
 
-var expect = require('gulp-expect-file');
-
-var plumber = require('gulp-plumber');
 
 
 /*gulp.task('babel', function() {
@@ -61,9 +60,11 @@ var bundler = watchify(browserify(opts));
 // add transformations here
 // i.e. b.transform(coffeeify);
 // Babel transform
-// bundler.transform(babelify.configure({
-//     sourceMapRelative: 'src'
-// }));
+bundler.transform(babelify.configure({
+    sourceMapRelative: 'src',
+    // plugins: ['transform-runtime'],
+    presets: ['es2015', "stage-0"]
+}));
 
 gulp.task('js', bundle); // so you can run `gulp js` to build the file
 bundler.on('update', bundle); // on any dep update, runs the bundler
@@ -76,9 +77,10 @@ function bundle() {
     .pipe(source('bundle.js'))
     // optional, remove if you don't need to buffer file contents
     .pipe(buffer())
+    // .pipe(uglify())
     // optional, remove if you dont want sourcemaps
     .pipe(sourcemaps.init({loadMaps: true})) // loads map from browserify file
-    // .pipe(uglify())
+    
     .on('error', function (err) {
       gutil.log.bind(gutil, 'Browserify Error')
       // this.emit("end");
@@ -88,6 +90,54 @@ function bundle() {
     .pipe(gulp.dest('./dist'))
     // .pipe(expect('dist/bundle.js'));
 }
+
+
+// gulp.task('build', function() {
+//   return browserify('./src/index.js')
+//     .bundle()
+//     .pipe(source('dist/bundle.js')) // gives streaming vinyl file object
+//     .pipe(buffer()) // <----- convert from streaming to buffered vinyl file object
+//     .pipe(uglify()) // now gulp-uglify works 
+//     .pipe(gulp.dest('./build'));
+// });
+// 
+
+// gulp.task('build', function () {
+
+//   // use `vinyl-transform` to wrap the regular ReadableStream returned by `b.bundle();` with vinyl file object
+//   // so that we can use it down a vinyl pipeline
+//   // while taking care of both streaming and buffered vinyl file objects
+//   var browserified = transform(function(filename) {
+//     // filename = './source/scripts/app.js' in this case
+//     return browserify(filename)
+//       .bundle();
+//   });
+
+//   return gulp.src(['./src/index.js']) // you can also use glob patterns here to browserify->uglify multiple files
+//     .pipe(browserified)
+//     .pipe(uglify())
+//     .pipe(gulp.dest('./build/'));
+// });
+// 
+
+
+
+// gulp.task('build', function() {
+//   var bundleStream = browserify('src/index.js').bundle();
+
+//   bundleStream
+//     .pipe(source('index.js'))
+//     .pipe(streamify(uglify()))
+//     .pipe(gulp.dest('./build/bundle.js'));
+// });
+// 
+
+gulp.task('build', function() {
+  return gulp.src('dist/bundle.js')
+    .pipe(uglify().on('error', gutil.log))
+    .pipe(gulp.dest('build'));
+});
+
 
 
 // gulp.task('default', ['babel', 'watch-js', 'watchify']);  

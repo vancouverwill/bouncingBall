@@ -20,9 +20,3 @@ window.onresize = function() {
 };
 
 
-
-
-
-
-
-

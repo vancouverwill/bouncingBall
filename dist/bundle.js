@@ -1,9 +1,14 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
 
-class  BouncingBall {
-	constructor(startingX, startingY) {
-		
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var BouncingBall = function () {
+	function BouncingBall(startingX, startingY) {
+		_classCallCheck(this, BouncingBall);
+
 		this.x = startingX;
 		this.y = startingY;
 
@@ -19,60 +24,73 @@ class  BouncingBall {
 		this.colour;
 	}
 
-	set y(value) {
-		if (typeof value !== "number") {
-			throw new Error("\"y\" must be a number.");
+	_createClass(BouncingBall, [{
+		key: "updatePosition",
+		value: function updatePosition(canvasHeight) {
+			if (this.y > canvasHeight) {
+				this.y = canvasHeight;
+				this.dy = -this.dy * this.dampingRate;
+			}
+			this.x += this.dx;
+			this.y += this.dy;
+
+			this.dy = this.dy + this.gravityRate;
 		}
-		this._y = value;
-	}
-
-	get y() {
-		return this._y;
-	}  
-
-	set x(value) {
-		if (typeof value !== "number") {
-			throw new Error("\"x\" must be a number.");
+	}, {
+		key: "getRandomColor",
+		value: function getRandomColor() {
+			var letters = "0123456789ABCDEF".split("");
+			var color = "#";
+			for (var i = 0; i < 6; i++) {
+				color += letters[Math.floor(Math.random() * 16)];
+			}
+			return color;
 		}
-		this._x = value;
-	}
-
-	get x() {
-		return this._x;
-	}
-
-	updatePosition(canvasHeight) {
-		if (this.y > canvasHeight) {
-			this.y = canvasHeight;
-			this.dy = -this.dy * this.dampingRate; 
+	}, {
+		key: "y",
+		set: function set(value) {
+			if (typeof value !== "number") {
+				throw new Error("\"y\" must be a number.");
+			}
+			this._y = value;
+		},
+		get: function get() {
+			return this._y;
 		}
-		this.x += this.dx; 
-		this.y += this.dy;
-
-		this.dy = this.dy + this.gravityRate;
-	}
-
-	getRandomColor() {
-		var letters = "0123456789ABCDEF".split("");
-		var color = "#";
-		for (var i = 0; i < 6; i++ ) {
-			color += letters[Math.floor(Math.random() * 16)];
+	}, {
+		key: "x",
+		set: function set(value) {
+			if (typeof value !== "number") {
+				throw new Error("\"x\" must be a number.");
+			}
+			this._x = value;
+		},
+		get: function get() {
+			return this._x;
 		}
-		return color;
-	}	
-}
+	}]);
+
+	return BouncingBall;
+}();
 
 module.exports = BouncingBall;
+
 },{}],2:[function(require,module,exports){
 "use strict";
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 var BouncingBall = require("./BouncingBall");
 
-let instance = null;
+var instance = null;
 
-class Canvas {
-	constructor(PageObject) {
-		if(!instance){
+var Canvas = function () {
+	function Canvas(PageObject) {
+		_classCallCheck(this, Canvas);
+
+		if (!instance) {
 			instance = this;
 			this.animation_active = false;
 		}
@@ -86,106 +104,131 @@ class Canvas {
 		return instance;
 	}
 
-	addBall(event) {
-		var ball = new BouncingBall(event.clientX, event.clientY);
-		this.balls.push(ball);
+	_createClass(Canvas, [{
+		key: "addBall",
+		value: function addBall(event) {
+			var ball = new BouncingBall(event.clientX, event.clientY);
+			this.balls.push(ball);
 
-		this.setAnimating();
-	}
-
-	setAnimating() {
-		if (this.animation_active === false) {
-			this.animate();
-			this.animation_active = true;
+			this.setAnimating();
 		}
-	}
-
-	animate(){
-		this.context.clearRect(0, 0, this.PageObject.canvasWidth, this.PageObject.canvasHeight);
-		
-		this.balls = this.balls.map(function(ball) {
-			ball.updatePosition(this.PageObject.canvasHeight);
-			this.drawBall(ball);
-			return ball;
-		}, this);
-
-		this.balls = this.balls.filter(this.isInXAxis.bind(this));
-
-		if (this.balls.length == 0) {
-			window.cancelAnimationFrame(this.raf);
-			this.animation_active = false;
-			return;
+	}, {
+		key: "setAnimating",
+		value: function setAnimating() {
+			if (this.animation_active === false) {
+				this.animate();
+				this.animation_active = true;
+			}
 		}
+	}, {
+		key: "animate",
+		value: function animate() {
+			this.context.clearRect(0, 0, this.PageObject.canvasWidth, this.PageObject.canvasHeight);
 
-		this.raf = window.requestAnimationFrame(this.animate.bind(this));
-	}
+			this.balls = this.balls.map(function (ball) {
+				ball.updatePosition(this.PageObject.canvasHeight);
+				this.drawBall(ball);
+				return ball;
+			}, this);
 
-	isInXAxis(ball) {
-		if ( ball.x > this.PageObject.canvasWidth + ball.pointRadius) {
-			return false;
+			this.balls = this.balls.filter(this.isInXAxis.bind(this));
+
+			if (this.balls.length == 0) {
+				window.cancelAnimationFrame(this.raf);
+				this.animation_active = false;
+				return;
+			}
+
+			this.raf = window.requestAnimationFrame(this.animate.bind(this));
 		}
-		return true;
-	}
+	}, {
+		key: "isInXAxis",
+		value: function isInXAxis(ball) {
+			if (ball.x > this.PageObject.canvasWidth + ball.pointRadius) {
+				return false;
+			}
+			return true;
+		}
+	}, {
+		key: "drawBall",
+		value: function drawBall(ball) {
+			this.context.beginPath();
+			this.context.fillStyle = ball.colour;
+			this.context.arc(ball.x, ball.y, ball.pointRadius, 0, Math.PI * 2, true);
+			this.context.closePath();
+			this.context.fill();
+		}
+	}]);
 
-	drawBall(ball) {
-		this.context.beginPath();
-		this.context.fillStyle= ball.colour;
-		this.context.arc(ball.x, ball.y, ball.pointRadius, 0, Math.PI*2, true);
-		this.context.closePath();
-		this.context.fill();
-	}
-}
+	return Canvas;
+}();
 
 module.exports = Canvas;
+
 },{"./BouncingBall":1}],3:[function(require,module,exports){
 "use strict";
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 var Canvas = require("./Canvas");
 
-class PageSetUp {
-	constructor() {
-
-	}
-	static updateCanvasHeight() {
-		myCanvas.width = this.canvasWidth;
+var PageSetUp = function () {
+	function PageSetUp() {
+		_classCallCheck(this, PageSetUp);
 	}
 
-	static updateCanvasWidth() {
-		myCanvas.height = this.canvasHeight;
-	}
+	_createClass(PageSetUp, null, [{
+		key: "updateCanvasHeight",
+		value: function updateCanvasHeight() {
+			myCanvas.width = this.canvasWidth;
+		}
+	}, {
+		key: "updateCanvasWidth",
+		value: function updateCanvasWidth() {
+			myCanvas.height = this.canvasHeight;
+		}
+	}, {
+		key: "setCanvasSize",
+		value: function setCanvasSize() {
+			this.canvasHeight = document.body.clientHeight;
+			this.canvasWidth = document.body.clientWidth;
+			PageSetUp.updateCanvasHeight();
+			PageSetUp.updateCanvasWidth();
+		}
+	}, {
+		key: "getCanvasHeight",
+		value: function getCanvasHeight() {
+			return myCanvas.width;
+		}
+	}, {
+		key: "getCanvasWidth",
+		value: function getCanvasWidth() {
+			return myCanvas.height;
+		}
+	}, {
+		key: "addEvents",
+		value: function addEvents() {
+			var canvas = new Canvas(this);
+			myCanvas.addEventListener("click", canvas.addBall.bind(canvas), false);
+		}
+	}]);
 
-	static setCanvasSize() {
-		this.canvasHeight = document.body.clientHeight;
-		this.canvasWidth = document.body.clientWidth;
-		PageSetUp.updateCanvasHeight();
-		PageSetUp.updateCanvasWidth();
-	}
-
-	static getCanvasHeight() {
-		return myCanvas.width;
-	}
-
-	static getCanvasWidth() {
-		return myCanvas.height;
-	}
-
-	static addEvents() {
-		var canvas = new Canvas(this);
-		myCanvas.addEventListener("click", canvas.addBall.bind(canvas), false);
-	}
-}
+	return PageSetUp;
+}();
 
 module.exports = PageSetUp;
+
 },{"./Canvas":2}],4:[function(require,module,exports){
 /* exported bodySetUp */
 "use strict";
 
-
 var PageSetUp = require("./PageSetUp");
 
-exports.myCanvas = document.getElementById("myCanvas"); 
+exports.myCanvas = document.getElementById("myCanvas");
 
-var bodySetUp = function() {
+var bodySetUp = function bodySetUp() {
 	PageSetUp.setCanvasSize();
 	PageSetUp.addEvents();
 };
@@ -194,17 +237,9 @@ window.onload = function () {
 	bodySetUp();
 };
 
-window.onresize = function() {
+window.onresize = function () {
 	PageSetUp.setCanvasSize();
 };
-
-
-
-
-
-
-
-
 
 },{"./PageSetUp":3}]},{},[4]);
 
