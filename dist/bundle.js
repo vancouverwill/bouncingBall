@@ -50,7 +50,7 @@ var BouncingBall = function () {
 	}, {
 		key: "bounce",
 		value: function bounce(canvasHeight) {
-			this.y = canvasHeight;
+			this.y = canvasHeight; // prevent getting stuck off screen
 			this.dy = -this.dy * this.dampingRate;
 		}
 	}, {
