@@ -20,8 +20,8 @@ class  BouncingBall {
 	}
 
 	set y(value) {
-		if (typeof value !== 'number') {
-			throw new Error('"y" must be a number.');
+		if (typeof value !== "number") {
+			throw new Error("\"y\" must be a number.");
 		}
 		this._y = value;
 	}
@@ -31,8 +31,8 @@ class  BouncingBall {
 	}  
 
 	set x(value) {
-		if (typeof value !== 'number') {
-			throw new Error('"x" must be a number.');
+		if (typeof value !== "number") {
+			throw new Error("\"x\" must be a number.");
 		}
 		this._x = value;
 	}
@@ -66,7 +66,7 @@ module.exports = BouncingBall;
 },{}],2:[function(require,module,exports){
 "use strict";
 
-var BouncingBall = require('./BouncingBall');
+var BouncingBall = require("./BouncingBall");
 
 let instance = null;
 
@@ -103,10 +103,10 @@ class Canvas {
 	animate(){
 		this.context.clearRect(0, 0, this.PageObject.canvasWidth, this.PageObject.canvasHeight);
 		
-		this.balls = this.balls.map(function(ball, index) {
+		this.balls = this.balls.map(function(ball) {
 			ball.updatePosition(this.PageObject.canvasHeight);
 			this.drawBall(ball);
-				return ball;
+			return ball;
 		}, this);
 
 		this.balls = this.balls.filter(this.isInXAxis.bind(this));
@@ -140,7 +140,7 @@ module.exports = Canvas;
 },{"./BouncingBall":1}],3:[function(require,module,exports){
 "use strict";
 
-var Canvas = require('./Canvas');
+var Canvas = require("./Canvas");
 
 class PageSetUp {
 	constructor() {
@@ -157,7 +157,6 @@ class PageSetUp {
 	static setCanvasSize() {
 		this.canvasHeight = document.body.clientHeight;
 		this.canvasWidth = document.body.clientWidth;
-		// myCanvas = document.getElementById("myCanvas");  
 		PageSetUp.updateCanvasHeight();
 		PageSetUp.updateCanvasWidth();
 	}
@@ -182,7 +181,7 @@ module.exports = PageSetUp;
 "use strict";
 
 
-var PageSetUp = require('./PageSetUp');
+var PageSetUp = require("./PageSetUp");
 
 exports.myCanvas = document.getElementById("myCanvas"); 
 
@@ -192,12 +191,12 @@ var bodySetUp = function() {
 };
 
 window.onload = function () {
-  	bodySetUp();
-}
+	bodySetUp();
+};
 
 window.onresize = function() {
 	PageSetUp.setCanvasSize();
-}
+};
 
 
 

@@ -1,6 +1,6 @@
 "use strict";
 
-var Canvas = require('./Canvas');
+var Canvas = require("./Canvas");
 
 class PageSetUp {
 	constructor() {
@@ -17,7 +17,6 @@ class PageSetUp {
 	static setCanvasSize() {
 		this.canvasHeight = document.body.clientHeight;
 		this.canvasWidth = document.body.clientWidth;
-		// myCanvas = document.getElementById("myCanvas");  
 		PageSetUp.updateCanvasHeight();
 		PageSetUp.updateCanvasWidth();
 	}

@@ -2,24 +2,22 @@
 "use strict";
 
 
-var PageSetUp = require('./PageSetUp');
-
+var PageSetUp = require("./PageSetUp");
 
 exports.myCanvas = document.getElementById("myCanvas"); 
 
 var bodySetUp = function() {
-	// var pageSetUp = PageSetUp();
 	PageSetUp.setCanvasSize();
 	PageSetUp.addEvents();
 };
 
 window.onload = function () {
-  	bodySetUp();
-}
+	bodySetUp();
+};
 
 window.onresize = function() {
 	PageSetUp.setCanvasSize();
-}
+};
 
 
 

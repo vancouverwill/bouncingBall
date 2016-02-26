@@ -1,6 +1,6 @@
 "use strict";
 
-var BouncingBall = require('./BouncingBall');
+var BouncingBall = require("./BouncingBall");
 
 let instance = null;
 
@@ -37,10 +37,10 @@ class Canvas {
 	animate(){
 		this.context.clearRect(0, 0, this.PageObject.canvasWidth, this.PageObject.canvasHeight);
 		
-		this.balls = this.balls.map(function(ball, index) {
+		this.balls = this.balls.map(function(ball) {
 			ball.updatePosition(this.PageObject.canvasHeight);
 			this.drawBall(ball);
-				return ball;
+			return ball;
 		}, this);
 
 		this.balls = this.balls.filter(this.isInXAxis.bind(this));

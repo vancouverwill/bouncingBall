@@ -19,8 +19,8 @@ class  BouncingBall {
 	}
 
 	set y(value) {
-		if (typeof value !== 'number') {
-			throw new Error('"y" must be a number.');
+		if (typeof value !== "number") {
+			throw new Error("\"y\" must be a number.");
 		}
 		this._y = value;
 	}
@@ -30,8 +30,8 @@ class  BouncingBall {
 	}  
 
 	set x(value) {
-		if (typeof value !== 'number') {
-			throw new Error('"x" must be a number.');
+		if (typeof value !== "number") {
+			throw new Error("\"x\" must be a number.");
 		}
 		this._x = value;
 	}
