@@ -138,7 +138,7 @@ var Canvas = function () {
 		this.PageObject = PageObject;
 
 		this.balls = [];
-		this.context = this.PageObject.canvas.getContext("2d");
+		this.context = this.PageObject.htmlCanvasElement.getContext("2d");
 		this.raf;
 
 		return instance;
@@ -217,22 +217,31 @@ var Canvas = require("./Canvas");
 var PageSetUp = function () {
 	function PageSetUp() {
 		_classCallCheck(this, PageSetUp);
+
+		this.canvasController;
+		this.htmlCanvasElement;
 	}
 
 	_createClass(PageSetUp, null, [{
+		key: "bodySetUp",
+		value: function bodySetUp() {
+			this.htmlCanvasElement = document.getElementById("myCanvas");
+			this.setCanvasSize();
+			this.addEvents();
+		}
+	}, {
 		key: "updateCanvasHeight",
 		value: function updateCanvasHeight() {
-			this.canvas.width = this.canvasWidth;
+			this.htmlCanvasElement.width = this.canvasWidth;
 		}
 	}, {
 		key: "updateCanvasWidth",
 		value: function updateCanvasWidth() {
-			this.canvas.height = this.canvasHeight;
+			this.htmlCanvasElement.height = this.canvasHeight;
 		}
 	}, {
 		key: "setCanvasSize",
 		value: function setCanvasSize(canvas) {
-			this.canvas = canvas;
 			this.canvasHeight = document.body.clientHeight;
 			this.canvasWidth = document.body.clientWidth;
 			PageSetUp.updateCanvasHeight();
@@ -241,18 +250,18 @@ var PageSetUp = function () {
 	}, {
 		key: "getCanvasHeight",
 		value: function getCanvasHeight() {
-			return this.canvas.width;
+			return this.htmlCanvasElement.width;
 		}
 	}, {
 		key: "getCanvasWidth",
 		value: function getCanvasWidth() {
-			return this.canvas.height;
+			return this.htmlCanvasElement.height;
 		}
 	}, {
 		key: "addEvents",
 		value: function addEvents() {
-			var canvas = new Canvas(this);
-			this.canvas.addEventListener("click", canvas.addBall.bind(canvas), false);
+			this.canvasController = new Canvas(this);
+			this.htmlCanvasElement.addEventListener("click", this.canvasController.addBall.bind(this.canvasController), false);
 		}
 	}]);
 
@@ -267,16 +276,8 @@ module.exports = PageSetUp;
 
 var PageSetUp = require("./PageSetUp");
 
-// exports.myCanvas = document.getElementById("myCanvas");
-
-var bodySetUp = function bodySetUp() {
-	var canvas = document.getElementById("myCanvas");
-	PageSetUp.setCanvasSize(canvas);
-	PageSetUp.addEvents();
-};
-
 window.onload = function () {
-	bodySetUp();
+	PageSetUp.bodySetUp();
 };
 
 window.onresize = function () {

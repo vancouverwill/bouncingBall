@@ -4,18 +4,24 @@ var Canvas = require("./Canvas");
 
 class PageSetUp {
 	constructor() {
-
+		this.canvasController
+		this.htmlCanvasElement
 	}
+	static bodySetUp() {
+		this.htmlCanvasElement = document.getElementById("myCanvas"); 
+		this.setCanvasSize();
+		this.addEvents();
+	};
+
 	static updateCanvasHeight() {
-		this.canvas.width = this.canvasWidth;
+		this.htmlCanvasElement.width = this.canvasWidth;
 	}
 
 	static updateCanvasWidth() {
-		this.canvas.height = this.canvasHeight;
+		this.htmlCanvasElement.height = this.canvasHeight;
 	}
 
 	static setCanvasSize(canvas) {
-		this.canvas = canvas;
 		this.canvasHeight = document.body.clientHeight;
 		this.canvasWidth = document.body.clientWidth;
 		PageSetUp.updateCanvasHeight();
@@ -23,16 +29,16 @@ class PageSetUp {
 	}
 
 	static getCanvasHeight() {
-		return this.canvas.width;
+		return this.htmlCanvasElement.width;
 	}
 
 	static getCanvasWidth() {
-		return this.canvas.height;
+		return this.htmlCanvasElement.height;
 	}
 
 	static addEvents() {
-		var canvas = new Canvas(this);
-		this.canvas.addEventListener("click", canvas.addBall.bind(canvas), false);
+		this.canvasController = new Canvas(this);
+		this.htmlCanvasElement.addEventListener("click", this.canvasController.addBall.bind(this.canvasController), false);
 	}
 }
 
