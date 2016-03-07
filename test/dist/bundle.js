@@ -187,11 +187,58 @@ class Canvas {
 
 module.exports = Canvas;
 },{"./BouncingBall":2}],4:[function(require,module,exports){
+"use strict";
+
+var Canvas = require("./Canvas");
+
+class PageSetUp {
+	constructor() {
+		this.canvasController
+		this.htmlCanvasElement
+	}
+	static bodySetUp() {
+		this.htmlCanvasElement = document.getElementById("myCanvas"); 
+		this.setCanvasSize();
+		this.addEvents();
+	};
+
+	static updateCanvasHeight() {
+		this.htmlCanvasElement.width = this.canvasWidth;
+	}
+
+	static updateCanvasWidth() {
+		this.htmlCanvasElement.height = this.canvasHeight;
+	}
+
+	static setCanvasSize(canvas) {
+		this.canvasHeight = document.body.clientHeight;
+		this.canvasWidth = document.body.clientWidth;
+		PageSetUp.updateCanvasHeight();
+		PageSetUp.updateCanvasWidth();
+	}
+
+	static getCanvasHeight() {
+		return this.htmlCanvasElement.width;
+	}
+
+	static getCanvasWidth() {
+		return this.htmlCanvasElement.height;
+	}
+
+	static addEvents() {
+		this.canvasController = new Canvas(this);
+		this.htmlCanvasElement.addEventListener("click", this.canvasController.addBall.bind(this.canvasController), false);
+	}
+}
+
+module.exports = PageSetUp;
+},{"./Canvas":3}],5:[function(require,module,exports){
 require('jsdom-global')()
 
 var assert = require('assert');
 
 var Canvas = require('../../src/Canvas');
+var PageSetUp = require('../../src/PageSetUp');
 
 
 describe('Canvas', function() {
@@ -199,7 +246,10 @@ describe('Canvas', function() {
 
   before(function() { 
     var htmlCanvas = document.getElementById("myCanvas"); 
-    canvas = new Canvas(htmlCanvas);
+    // var PageSetUp = new PageSetUp();
+    PageSetUp.bodySetUp()
+    canvas = PageSetUp.canvasController;
+    // canvas = new Canvas(PageSetUp);
   });
 
   // beforeEach(function() {
@@ -213,7 +263,7 @@ describe('Canvas', function() {
   
 
  });
-},{"../../src/Canvas":3,"assert":5,"jsdom-global":1}],5:[function(require,module,exports){
+},{"../../src/Canvas":3,"../../src/PageSetUp":4,"assert":6,"jsdom-global":1}],6:[function(require,module,exports){
 // http://wiki.commonjs.org/wiki/Unit_Testing/1.0
 //
 // THIS IS NOT TESTED NOR LIKELY TO WORK OUTSIDE V8!
@@ -574,7 +624,7 @@ var objectKeys = Object.keys || function (obj) {
   return keys;
 };
 
-},{"util/":9}],6:[function(require,module,exports){
+},{"util/":10}],7:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -599,7 +649,7 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -692,14 +742,14 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 module.exports = function isBuffer(arg) {
   return arg && typeof arg === 'object'
     && typeof arg.copy === 'function'
     && typeof arg.fill === 'function'
     && typeof arg.readUInt8 === 'function';
 }
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -1289,4 +1339,4 @@ function hasOwnProperty(obj, prop) {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":8,"_process":7,"inherits":6}]},{},[4]);
+},{"./support/isBuffer":9,"_process":8,"inherits":7}]},{},[5]);

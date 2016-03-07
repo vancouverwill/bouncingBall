@@ -3,6 +3,7 @@ require('jsdom-global')()
 var assert = require('assert');
 
 var Canvas = require('../../src/Canvas');
+var PageSetUp = require('../../src/PageSetUp');
 
 
 describe('Canvas', function() {
@@ -10,7 +11,10 @@ describe('Canvas', function() {
 
   before(function() { 
     var htmlCanvas = document.getElementById("myCanvas"); 
-    canvas = new Canvas(htmlCanvas);
+    // var PageSetUp = new PageSetUp();
+    PageSetUp.bodySetUp()
+    canvas = PageSetUp.canvasController;
+    // canvas = new Canvas(PageSetUp);
   });
 
   // beforeEach(function() {
