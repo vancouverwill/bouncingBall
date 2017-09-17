@@ -1,8 +1,5 @@
 /* exported bodySetUp */
-"use strict";
-
-
-var PageSetUp = require("./PageSetUp");
+import PageSetUp from "./PageSetUp";
 
 window.onload = function () {
 	PageSetUp.bodySetUp();

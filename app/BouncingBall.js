@@ -1,12 +1,10 @@
-"use strict";
-
 class  BouncingBall {
 	constructor(startingX, startingY) {
 		
 		this.x = startingX;
 		this.y = startingY;
 
-		this.colour = this.getRandomColor();
+		this.colour = BouncingBall.getRandomColor();
 		this.intializeRandomSpeed();
 
 		this.pointRadius = 5;
@@ -68,12 +66,12 @@ class  BouncingBall {
 
 	bounce(canvasHeight) {
 		this.y = canvasHeight; // prevent getting stuck off screen
-		var minSpeedNeededToLeaveFloor = 0.1;
+		const minSpeedNeededToLeaveFloor = 0.1;
 		if (Math.abs(this.dy) > minSpeedNeededToLeaveFloor) {
 			this.dy = -this.dy * this.dampingRate;
 		}
 		else {
-			this.setBallRolling(canvasHeight)
+			this.setBallRolling(canvasHeight);
 		}
 	}
 
@@ -86,10 +84,10 @@ class  BouncingBall {
 		this.dy = this.dy + this.gravityRate;
 	}
 
-	getRandomColor() {
-		var letters = "0123456789ABCDEF".split("");
-		var color = "#";
-		for (var i = 0; i < 6; i++ ) {
+	static getRandomColor() {
+		const letters = "0123456789ABCDEF".split("");
+		let color = "#";
+		for (let i = 0; i < 6; i++ ) {
 			color += letters[Math.floor(Math.random() * 16)];
 		}
 		return color;
@@ -97,4 +95,4 @@ class  BouncingBall {
 }
 
 
-module.exports = BouncingBall;
+export default BouncingBall;

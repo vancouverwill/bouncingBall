@@ -15,20 +15,49 @@
         "semi": [
             2,
             "always"
-        ]
-    },
-    "env": {
-        "browser": true,
-        "es6" : true,
-        "node" : true
+        ],
+        "class-property/class-property-semicolon": ["error", "never"],
+        "strict": "error",
+        "no-undef": "error",
+        // "no-magic-numbers": "warn",
+        "class-methods-use-this": "error",
+        "no-else-return": "error",
+        "no-eq-null": "error",
+        "no-extra-bind": "error",
+        // ES6
+        "no-var": "error",
+        "no-this-before-super": "error",
+        "constructor-super": "error",
+        "no-duplicate-imports": "error",
+        "no-const-assign": "error",
+        "prefer-const": "error",
+        "sort-imports": "error",
+        "arrow-spacing": "warn",
+        "prefer-arrow-callback": "warn",
+        "babel/no-invalid-this": 1
     },
     "extends": "eslint:recommended",
+    "env": {
+        "browser": true,
+        "es6" : true
+    },
     "ecmaFeatures": {
         "experimentalObjectRestSpread": true
     },
     "globals": {
         "myCanvas": true
     },
+    "parserOptions": { 
+        "ecmaVersion": 6,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "impliedStrict": true
+        }
+     },
     "plugins": [
+        "babel",
+        "class-property",
+        "import",
+        "promise"
     ]
 }

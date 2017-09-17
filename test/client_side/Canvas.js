@@ -25,6 +25,10 @@ describe('Canvas', function() {
     it('should have 0 balls to start with', function () {
         assert.equal(0, canvas.balls.length);
     });
+
+    it('should have five balls after five clicks on page', function() {
+      // fire page event to mimic mouse
+    })
   
 
  });

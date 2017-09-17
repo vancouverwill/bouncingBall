@@ -1,17 +1,15 @@
-"use strict";
-
-var Canvas = require("./Canvas");
+import Canvas from "./Canvas";
 
 class PageSetUp {
 	constructor() {
-		this.canvasController
-		this.htmlCanvasElement
+		this.canvasController;
+		this.htmlCanvasElement;
 	}
 	static bodySetUp() {
 		this.htmlCanvasElement = document.getElementById("myCanvas"); 
 		this.setCanvasSize();
 		this.addEvents();
-	};
+	}
 
 	static updateCanvasHeight() {
 		this.htmlCanvasElement.width = this.canvasWidth;
@@ -21,7 +19,7 @@ class PageSetUp {
 		this.htmlCanvasElement.height = this.canvasHeight;
 	}
 
-	static setCanvasSize(canvas) {
+	static setCanvasSize() {
 		this.canvasHeight = document.body.clientHeight;
 		this.canvasWidth = document.body.clientWidth;
 		PageSetUp.updateCanvasHeight();
@@ -42,4 +40,4 @@ class PageSetUp {
 	}
 }
 
-module.exports = PageSetUp;
+export default PageSetUp;

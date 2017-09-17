@@ -1,6 +1,4 @@
-"use strict";
-
-var BouncingBall = require("./BouncingBall");
+import BouncingBall from "./BouncingBall";
 
 let instance = null;
 
@@ -21,7 +19,7 @@ class Canvas {
 	}
 
 	addBall(event) {
-		var ball = new BouncingBall(event.clientX, event.clientY);
+		const ball = new BouncingBall(event.clientX, event.clientY);
 		this.balls.push(ball);
 
 		this.setAnimating();
@@ -70,4 +68,4 @@ class Canvas {
 	}
 }
 
-module.exports = Canvas;
+export default Canvas;
