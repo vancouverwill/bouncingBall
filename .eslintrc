@@ -41,9 +41,6 @@
         "browser": true,
         "es6" : true
     },
-    "ecmaFeatures": {
-        "experimentalObjectRestSpread": true
-    },
     "globals": {
         "myCanvas": true
     },

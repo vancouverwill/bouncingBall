@@ -1,8 +1,10 @@
 
-To begin wiht run `npm install`
+To begin with run `npm install`
 
-* To check js `npm run lint`
+* Lint js : `npm run lint`
 
-* Run tests `npm test`
+* Unit tests : `npm test`
 
-* To do client tests run  `npm run client_test_setup` then view tests at  `test/client_side/index.html`
+* Integration tests :  `npm run client_test_setup` Test results :  `test/client_side/index.html`
+
+* To start `open index.html`

@@ -5,7 +5,7 @@
   "main": "index.html",
   "scripts": {
     "lint": "eslint src/*",
-    "test": "mocha --compilers js:babel-core/register test/server_side",
+    "test": "mocha --compilers js:babel-core/register test/unit_tests",
     "client_test_setup": "browserify ./test/client_side/Canvas.js --outfile ./test/dist/bundle.js"
   },
   "author": "Will Melbourne",

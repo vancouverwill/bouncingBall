@@ -1,8 +1,8 @@
-require('jsdom-global')()
+import 'jsdom-global';
 
-var assert = require('assert');
+import assert from 'assert';
 
-var BouncingBall = require('../../src/BouncingBall');
+import BouncingBall from '../../app/BouncingBall.js';
 
 
 describe('Bouncing Ball', function() {
@@ -16,13 +16,13 @@ describe('Bouncing Ball', function() {
     ball = new BouncingBall(20, 40);
   });
 
-  it('should have x and y equal to paramaters passed to the constructor', function () {
+  it('should have x and y equal to the arguments which were in the constructor', function () {
       assert.equal(20, ball.x);
       assert.equal(40, ball.y);		
   });
 
   it('should return a valid new hexadecimal colour', function () {
-      var colour = ball.getRandomColor();
+      var colour = BouncingBall.getRandomColor();
       assert.equal(true, colour.match("^\#[A-Z0-9]{6}") != null);
   });
 
