@@ -1,7 +1,7 @@
 
 ## Html5 Canvas animation of bouncing balls
 
-Native js with HTML5 canvas animation of bouncing balls with friction.
+Native js with HTML5 canvas animation of bouncing balls with friction. For demo see [here](http://bouncingballs.willmelbourne.com/)
 
 ## Setup
 
